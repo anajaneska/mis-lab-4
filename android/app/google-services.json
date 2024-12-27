@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "512571514486",
+    "project_id": "exam-schedule-a3384",
+    "storage_bucket": "exam-schedule-a3384.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:512571514486:android:b3f0d046ef18e88f470957",
+        "android_client_info": {
+          "package_name": "mk.ukim.finki.exam_schedule"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB12F9r2MjETB4QLxkJ7MGCiAtET_SxmUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
