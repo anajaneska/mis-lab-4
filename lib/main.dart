@@ -141,7 +141,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MapScreen())
+                    MaterialPageRoute(
+                        builder: (context) => MapScreen(exams: _events.values.expand((e)=>e).toList()),
+                    )
                 );
               },
               child: Text('Go to Map')
