@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:exam_schedule/pages/add_exam.dart';
+import 'package:exam_schedule/pages/map_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -136,6 +137,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
           ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen())
+                );
+              },
+              child: Text('Go to Map')
+          )
           ],
         ),
       floatingActionButton: FloatingActionButton(
@@ -156,7 +166,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
           },
         child: const Icon(Icons.add),
       ),
-
     );
   }
 }
