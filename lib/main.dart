@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exam_schedule/pages/add_exam.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,8 +57,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   _loadFirestoreEvents() async {
+    final firstDay = DateTime(_focusedDay.year, _focusedDay.month, 1);
+    final lastDay = DateTime(_focusedDay.year, _focusedDay.month + 1, 0);
+    _events = {};
+    
     final snap = await FirebaseFirestore.instance
         .collection('Exam')
+        .where('DateTime', isGreaterThanOrEqualTo: firstDay)
+        .where('DateTime', isLessThanOrEqualTo: lastDay)
         .withConverter(
         fromFirestore: Exam.fromFirestore,
         toFirestore: (event, options) => event.toFirestore())
@@ -113,7 +120,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
               },
               onPageChanged: (focusedDay) {
                 // No need to call `setState()` here
-                _focusedDay = focusedDay;
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+                _loadFirestoreEvents();
               },
             ),
           ..._getEventsForTheDay(_selectedDay!).map(
@@ -127,7 +137,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
           ),
           ],
-        )
+        ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final result = await Navigator.push<bool>(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => AddExam(
+                      firstDate: _firstDay,
+                      lastDate: _lastDay,
+                      selectedDate: _selectedDay,
+                  ),
+              ),
+            );
+            if(result ?? false) {
+              _loadFirestoreEvents();
+            }
+          },
+        child: const Icon(Icons.add),
+      ),
 
     );
   }
