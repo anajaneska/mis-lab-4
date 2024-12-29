@@ -83,15 +83,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
       appBar: AppBar(
         title: Text("Calendar App"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: ListView(
+        children: [
             TableCalendar(
               eventLoader: _getEventsForTheDay,
               focusedDay: _focusedDay,
-              firstDay:DateTime.utc(2010, 10, 16),
-              lastDay:DateTime.utc(2030, 3, 14),
+              firstDay: _firstDay,
+              lastDay: _lastDay,
               calendarFormat: _calendarFormat,
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
@@ -117,61 +115,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 // No need to call `setState()` here
                 _focusedDay = focusedDay;
               },
-            )
+            ),
+          ..._getEventsForTheDay(_selectedDay!).map(
+                (event) => ListTile(
+              title: Text(
+                event.name,
+              ),
+              subtitle: Text(
+                event.date.toString(),
+              ),
+            ),
+          ),
           ],
         )
-      )
+
     );
   }
 }
-
-/*
-class ExamListScreen extends StatefulWidget {
-  @override
-  _ExamListScreenState createState() => _ExamListScreenState();
-}
-
-class _ExamListScreenState extends State<ExamListScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-  Widget _buildListItem(BuildContext context, DocumentSnapshot doc) {
-    // Extract the necessary fields from the document
-    //Timestamp timestamp = doc['DateTime']['Date'];
-    //DateTime examDate = doc['DateTime']['Date'].toString() as DateTime;
-    //String time = doc['DateTime']['Time'].toString();
-   // String location = doc['Location'].toString();
-    var dateTime = (doc['DateTime'] as Timestamp).toDate();
-    var date = DateFormat('yyyy-MM-dd').format(dateTime);
-    var time = DateFormat('HH:mm').format(dateTime);
-
-    return ListTile(
-      title:  Text(dateTime.toString()),
-      subtitle: Text("Date: $date"),
-      trailing: Text("Time: $time"),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Exam List"),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Exam').snapshots(),
-        builder: (context,snapshot) {
-          if(!snapshot.hasData) return const Text('loading');
-          return ListView.builder(
-            itemExtent: 80.0,
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) =>
-            _buildListItem(context, snapshot.data!.docs[index])
-          );
-        }
-
-      ),
-    );
-  }
-}*/
